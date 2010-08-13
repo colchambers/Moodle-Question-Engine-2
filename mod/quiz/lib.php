@@ -484,7 +484,7 @@ function quiz_grade_item_update($quiz, $grades=NULL) {
                 print_single_button($back_link,  null,  get_string('cancel'),  'post',  $CFG->framename);
                 echo '</div>';
                 print_box_end();
-    
+
                 return GRADE_UPDATE_ITEM_LOCKED;
             }
         }

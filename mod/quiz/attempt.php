@@ -93,6 +93,9 @@ if (empty($slots)) {
 // Print the quiz page //////////////////////////////////////
 
 // Print the page header
+// ou-specific begins
+$PAGEWILLCALLSKIPMAINDESTINATION = true;
+// ou-specific ends
 require_js(array('yui_dom-event'));
 require_js($CFG->httpswwwroot . '/mod/quiz/quiz.js');
 $title = get_string('attempt', 'quiz', $attemptobj->get_attempt_number());
