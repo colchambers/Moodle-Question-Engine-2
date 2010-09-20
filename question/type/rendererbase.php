@@ -187,8 +187,49 @@ abstract class qtype_renderer extends renderer_base {
     public function head_code(question_attempt $qa) {
         return implode("\n", $qa->get_question()->qtype->find_standard_scripts_and_css());
     }
-}
 
+    protected function feedback_class($fraction) {
+        return question_state::graded_state_for_fraction($fraction)
+                ->get_feedback_class();
+    }
+
+    /**
+     * Return an appropriate icon (green tick, red cross, etc.) for a grade.
+     * @param float $fraction grade on a scale 0..1.
+     * @param boolean $selected whether to show a big or small icon. (Deprecated)
+     * @return string html fragment.
+     */
+    protected function feedback_image($fraction, $selected = true) {
+        global $CFG;
+
+        $state = question_state::graded_state_for_fraction($fraction);
+
+        if ($state == question_state::$gradedright) {
+            $icon = 'tick_green';
+        } else if ($state == question_state::$gradedpartial) {
+            $icon = 'tick_amber';
+        } else {
+            $icon = 'cross_red';
+        }
+        if ($selected) {
+            $icon .= '_big';
+        } else {
+            $icon .= '_small';
+        }
+
+        $attributes = array(
+            'src' => $CFG->pixpath . '/i/' . $icon . '.gif',
+            'alt' => get_string($state->get_feedback_class(), 'question'),
+            'class' => 'questioncorrectnessicon',
+        );
+
+// ou-specific begins
+        return html_writer::tag('span', $attributes['alt'], array('class' => 'asscesshide'));
+// ou-specific ends
+
+        return html_writer::empty_tag('img', $attributes);
+    }
+}
 
 /**
  * Renderer base classes for question types.
