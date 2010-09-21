@@ -223,9 +223,9 @@ abstract class qtype_renderer extends renderer_base {
             'class' => 'questioncorrectnessicon',
         );
 
-// ou-specific begins
-        return html_writer::tag('span', $attributes['alt'], array('class' => 'asscesshide'));
-// ou-specific ends
+// ou-specific begins 10828
+        return html_writer::tag('span', $attributes['alt'], array('class' => 'accesshide'));
+// ou-specific ends 10828
 
         return html_writer::empty_tag('img', $attributes);
     }
