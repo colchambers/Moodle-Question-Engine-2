@@ -510,6 +510,10 @@ abstract class quiz_attempt_report_table extends table_sql {
     function icon_for_fraction($fraction) {
         global $CFG;
 
+// ou-specific begins 10824
+        return '';
+// ou-specific ends 10824
+
         $state = question_state::graded_state_for_fraction($fraction);
         if ($state == question_state::$gradedright) {
             $icon = 'tick_green_big';
