@@ -83,16 +83,12 @@ abstract class question_engine {
      * @param question_usage_by_activity the usage to save.
      */
     public static function save_questions_usage_by_activity(question_usage_by_activity $quba) {
-        global $Out;
-        $Out->append('1');
-    	$dm = new question_engine_data_mapper();
+        $dm = new question_engine_data_mapper();
         $observer = $quba->get_observer();
         if ($observer instanceof question_engine_unit_of_work) {
-            $Out->append('2');
-        	$observer->save($dm);
+            $observer->save($dm);
         } else {
-            $Out->append('3');
-        	$dm->insert_questions_usage_by_activity($quba);
+            $dm->insert_questions_usage_by_activity($quba);
         }
     }
 
@@ -2031,13 +2027,9 @@ class question_attempt {
      * @param integer $userid the user to attribute the aciton to. (If not given, use the current user.)
      */
     public function process_action($submitteddata, $timestamp = null, $userid = null) {
-        global $Out;
-        $Out->append('1');
-//        $Out->print_r($this->behaviour, '$this->behaviour = ');
-    	$pendingstep = new question_attempt_pending_step($submitteddata, $timestamp, $userid);
+        $pendingstep = new question_attempt_pending_step($submitteddata, $timestamp, $userid);
         if ($this->behaviour->process_action($pendingstep) == self::KEEP) {
-            $Out->append('2');
-        	$this->add_step($pendingstep);
+            $this->add_step($pendingstep);
             if ($pendingstep->response_summary_changed()) {
                 $this->responsesummary = $pendingstep->get_new_response_summary();
             }

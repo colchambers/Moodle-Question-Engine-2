@@ -522,29 +522,21 @@ abstract class question_behaviour_with_save extends question_behaviour {
      * @return boolean either {@link question_attempt::KEEP} or {@link question_attempt::DISCARD}
      */
     public function process_save(question_attempt_pending_step $pendingstep) {
-        global $Out;
-        $Out->append('1');
-    	if ($this->qa->get_state()->is_finished()) {
-            $Out->append('2');
-    		return question_attempt::DISCARD;
+        if ($this->qa->get_state()->is_finished()) {
+            return question_attempt::DISCARD;
         } else if (!$this->qa->get_state()->is_active()) {
             throw new Exception('Question is not active, cannot process_actions.');
         }
 
-        $Out->append('3');
         if ($this->is_same_response($pendingstep)) {
-            $Out->append('4');
-        	return question_attempt::DISCARD;
+            return question_attempt::DISCARD;
         }
 
         if ($this->is_complete_response($pendingstep)) {
-            $Out->append('6');
-        	$pendingstep->set_state(question_state::$complete);
+            $pendingstep->set_state(question_state::$complete);
         } else {
-            $Out->append('7');
-        	$pendingstep->set_state(question_state::$todo);
+            $pendingstep->set_state(question_state::$todo);
         }
-        $Out->append('10');
         return question_attempt::KEEP;
     }
 
