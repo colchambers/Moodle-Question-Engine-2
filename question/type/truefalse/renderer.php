@@ -35,6 +35,8 @@ class qtype_truefalse_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
             question_display_options $options) {
 
+        global $Out;
+            	
         $question = $qa->get_question();
         $response = $qa->get_last_qt_var('answer', '');
 
@@ -56,11 +58,21 @@ class qtype_truefalse_renderer extends qtype_renderer {
             $trueattributes['disabled'] = 'disabled';
             $falseattributes['disabled'] = 'disabled';
         }
+        
+        $Out->print_r($response, '$response = ');
+        
 
         // Work out which radio button to select (if any)
         $truechecked = false;
         $falsechecked = false;
         $responsearray = array();
+        
+        $Out->append('$response false = '.($response===0));
+         $Out->var_dump(0, '0 = ');
+        $Out->var_dump($response, '$response = ');
+        if($response==false) {
+//        	$response=0;
+        }
         if ($response) {
             $trueattributes['checked'] = 'checked';
             $truechecked = true;
@@ -76,6 +88,7 @@ class qtype_truefalse_renderer extends qtype_renderer {
         $falseclass = '';
         $truefeedbackimg = '';
         $falsefeedbackimg = '';
+        
         if ($options->correctness) {
             if ($truechecked) {
                 $trueclass = ' ' . $this->feedback_class((int) $question->rightanswer);

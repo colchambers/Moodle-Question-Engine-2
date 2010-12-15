@@ -122,7 +122,9 @@ class qbehaviour_opaque extends question_behaviour {
     }
 
     public function process_action(question_attempt_pending_step $pendingstep) {
-        if ($pendingstep->has_behaviour_var('finish')) {
+        global $Out;
+        $Out->append('1');
+    	if ($pendingstep->has_behaviour_var('finish')) {
             return $this->process_finish($pendingstep);
         }
         if ($pendingstep->has_behaviour_var('comment')) {

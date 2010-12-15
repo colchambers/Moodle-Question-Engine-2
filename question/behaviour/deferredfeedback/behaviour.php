@@ -56,7 +56,9 @@ class qbehaviour_deferredfeedback extends question_behaviour_with_save {
     }
 
     public function process_action(question_attempt_pending_step $pendingstep) {
-        if ($pendingstep->has_behaviour_var('comment')) {
+        global $Out;
+        $Out->append('1');
+    	if ($pendingstep->has_behaviour_var('comment')) {
             return $this->process_comment($pendingstep);
         } else if ($pendingstep->has_behaviour_var('finish')) {
             return $this->process_finish($pendingstep);

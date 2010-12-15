@@ -114,6 +114,14 @@ class question_utils_test extends UnitTestCase {
                 array('key' => '0'),
                 array('key' => ''),
                 'key'));
+        $this->assertFalse(question_utils::arrays_same_at_key_missing_is_blank(
+                array('key' => 0),
+                array(),
+                'key'));
+        $this->assertFalse(question_utils::arrays_same_at_key_missing_is_blank(
+                array('key' => 0),
+                array(''),
+                'key'));
         $this->assertTrue(question_utils::arrays_same_at_key_missing_is_blank(
                 array(),
                 array('key' => ''),

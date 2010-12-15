@@ -41,7 +41,7 @@ class qtype_truefalse_question extends question_graded_automatically {
     }
 
     public function get_correct_response() {
-        return array('answer' => $this->rightanswer);
+        return array('answer' => (int) $this->rightanswer);
     }
 
     public function summarise_response(array $response) {
@@ -80,7 +80,16 @@ class qtype_truefalse_question extends question_graded_automatically {
     }
 
     public function is_same_response(array $prevresponse, array $newresponse) {
-        return question_utils::arrays_same_at_key_missing_is_blank(
+        
+    	global $Out;
+    	$Out->append('1');
+    	$is_blank = question_utils::arrays_same_at_key_missing_is_blank(
+                $prevresponse, $newresponse, 'answer');
+        $Out->print_r($is_blank, '$is_blank (print_r) = ');
+        $Out->var_dump($newresponse, '$newresponse = ');
+        $Out->var_dump($is_blank, '$is_blank = ');
+//        $Out->exitScript();
+    	return question_utils::arrays_same_at_key_missing_is_blank(
                 $prevresponse, $newresponse, 'answer');
     }
 

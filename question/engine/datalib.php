@@ -40,7 +40,9 @@ class question_engine_data_mapper {
      * @param question_usage_by_activity $quba the usage to store.
      */
     public function insert_questions_usage_by_activity(question_usage_by_activity $quba) {
-        $record = new stdClass;
+        global $Out;
+        $Out->append('1');
+    	$record = new stdClass;
         $record->contextid = $quba->get_owning_context()->id;
         $record->component = addslashes($quba->get_owning_component());
         $record->preferredbehaviour = addslashes($quba->get_preferred_behaviour());
@@ -254,6 +256,8 @@ ORDER BY
             throw new Exception('Failed to load questions_usage_by_activity ' . $qubaid);
         }
 
+        global $Out;
+//        $Out->print_r($records, '$records = ');
         return question_usage_by_activity::load_from_records($records, $qubaid);
     }
 
@@ -914,20 +918,31 @@ class question_engine_unit_of_work implements question_usage_observer {
      * @param question_engine_data_mapper $dm the mapper to use to update the database.
      */
     public function save(question_engine_data_mapper $dm) {
-        $dm->delete_steps_for_question_attempts(array_keys($this->attemptstodeletestepsfor));
+        global $Out;
+        $Out->append('1');
+    	$dm->delete_steps_for_question_attempts(array_keys($this->attemptstodeletestepsfor));
+    	$Out->append('2');
         foreach ($this->stepsadded as $stepinfo) {
-            list($step, $questionattemptid, $seq) = $stepinfo;
+            $Out->append('3');
+        	list($step, $questionattemptid, $seq) = $stepinfo;
             $dm->insert_question_attempt_step($step, $questionattemptid, $seq);
         }
+        $Out->append('4');
         foreach ($this->attemptsadded as $qa) {
-            $dm->insert_question_attempt($qa);
+            $Out->append('5');
+        	$dm->insert_question_attempt($qa);
         }
+        $Out->append('6');
         foreach ($this->attemptsmodified as $qa) {
-            $dm->update_question_attempt($qa);
+            $Out->append('7');
+        	$dm->update_question_attempt($qa);
         }
+        $Out->append('8');
         if ($this->modified) {
-            $dm->update_questions_usage_by_activity($this->quba);
+            $Out->append('9');
+        	$dm->update_questions_usage_by_activity($this->quba);
         }
+        $Out->append('10');
     }
 }
 

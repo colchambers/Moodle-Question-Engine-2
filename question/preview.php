@@ -51,7 +51,7 @@ question_require_capability_on($question, 'use');
 $options = new question_preview_options($question);
 $options->load_user_defaults();
 $options->set_from_request();
-
+global $Out;
 // Get and validate exitsing preview, or start a new one.
 $previewid = optional_param('previewid', 0, PARAM_ALPHANUM);
 if ($previewid) {
@@ -59,7 +59,9 @@ if ($previewid) {
         print_error('notyourpreview', 'question');
     }
     try {
-        $quba = question_engine::load_questions_usage_by_activity($previewid);
+        $Out->append('before load_questions_usage_by_activity');
+    	$quba = question_engine::load_questions_usage_by_activity($previewid);
+//    	$Out->print_r($quba, '$quba = ');
     } catch (Exception $e){
         print_error('submissionoutofsequencefriendlymessage', 'question',
                 question_preview_url($question->id, $options->behaviour,
@@ -108,10 +110,23 @@ if (data_submitted() && confirm_sesskey()) {
 
     } else if (optional_param('fill', null, PARAM_BOOL)) {
         $correctresponse = $quba->get_correct_response($slot);
+        global $Out;
+        $Out->print_r($correctresponse, '$correctresponse = ');
+//        $correctresponse['answer'] = false;
+
+        $notEmptyCorrectResponse = $correctresponse['answer'] === false;
+//        if($correctresponse['answer']==false){
+//        	$correctresponse['answer'] = true;
+//        }
+        $Out->append('$notEmptyCorrectResponse = '.$notEmptyCorrectResponse);
+//		die;
         $quba->process_action($slot, $correctresponse);
+//        $Out->print_r($quba, '$quba = ');
         begin_sql();
+//        die;
         question_engine::save_questions_usage_by_activity($quba);
         commit_sql();
+//        die;
         redirect($actionurl);
 
     } else if (optional_param('finish', null, PARAM_BOOL)) {
